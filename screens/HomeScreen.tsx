@@ -17,7 +17,9 @@ import { MAIN_CATEGORIES, Category } from '../types/models';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get('window');
-const CARD_SIZE = (width - 64) / 3; // 3 columns with padding
+// 데스크톱에서는 480px 기준으로 카드 크기 계산
+const containerWidth = Math.min(width, 480);
+const CARD_SIZE = (containerWidth - 64) / 3; // 3 columns with padding
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
@@ -36,8 +38,9 @@ export default function HomeScreen() {
       <ScrollView 
         contentContainerStyle={[
           styles.scrollContent, 
-          { paddingBottom: insets.bottom + 80 }
+          { paddingBottom: 90 }
         ]}
+        showsVerticalScrollIndicator={false}
       >
         {/* Header */}
         <View style={styles.header}>
