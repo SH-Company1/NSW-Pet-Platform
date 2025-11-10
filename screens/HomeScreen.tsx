@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types/navigation';
 import { MAIN_CATEGORIES, Category } from '../types/models';
 
@@ -20,6 +21,7 @@ const CARD_SIZE = (width - 64) / 3; // 3 columns with padding
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const insets = useSafeAreaInsets();
 
   const handleCategoryPress = (category: Category) => {
     navigation.navigate('CategoryDetail', {
@@ -31,7 +33,12 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        contentContainerStyle={[
+          styles.scrollContent, 
+          { paddingBottom: insets.bottom + 80 }
+        ]}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logo}>NSW Pet</Text>
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   header: {
     flexDirection: 'row',
