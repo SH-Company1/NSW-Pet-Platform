@@ -27,7 +27,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "name": "NSW Pet Platform",
+      "shortName": "NSW Pet",
+      "description": "반려동물을 위한 종합 플랫폼",
+      "lang": "ko",
+      "scope": "/",
+      "startUrl": "/",
+      "display": "standalone",
+      "orientation": "portrait",
+      "themeColor": "#4CAF50",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }

@@ -1,0 +1,42 @@
+{
+  "name": "NSW Pet Platform",
+  "short_name": "NSW Pet",
+  "description": "반려동물을 위한 종합 플랫폼",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#4CAF50",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/adaptive-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "홈",
+      "short_name": "홈",
+      "description": "NSW Pet 홈 화면",
+      "url": "/",
+      "icons": [{ "src": "/assets/icon.png", "sizes": "96x96" }]
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "ko",
+  "dir": "ltr",
+  "scope": "/"
+}
+
