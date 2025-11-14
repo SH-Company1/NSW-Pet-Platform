@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#FFA042',
   },
   notification: {
     fontSize: 24,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 16,
     height: 180,
-    backgroundColor: '#81C784',
+    backgroundColor: '#FFB366',
     borderRadius: 20,
     padding: 20,
     justifyContent: 'space-between',
@@ -132,18 +132,18 @@ const styles = StyleSheet.create({
   },
   bannerSubtitle: {
     fontSize: 16,
-    color: '#2E7D32',
+    color: '#C65F00',
     marginBottom: 8,
   },
   bannerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1B5E20',
+    color: '#8B4000',
     lineHeight: 34,
   },
   bannerButton: {
     alignSelf: 'flex-end',
-    backgroundColor: '#388E3C',
+    backgroundColor: '#FF8C00',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,

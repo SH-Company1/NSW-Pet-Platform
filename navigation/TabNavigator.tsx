@@ -16,7 +16,7 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#4CAF50',
+        tabBarActiveTintColor: '#FFA042',
         tabBarInactiveTintColor: '#9E9E9E',
         headerShown: false,
         tabBarStyle: {
@@ -72,7 +72,7 @@ export default function TabNavigator() {
   );
 }
 
-function TabIcon({ icon }: { icon: string; color: string }) {
-  return <Text style={{ fontSize: 24 }}>{icon}</Text>;
+function TabIcon({ icon, color }: { icon: string; color: string }) {
+  return <Text style={{ fontSize: 24, color }}>{icon}</Text>;
 }
 

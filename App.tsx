@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types/navigation';
 import TabNavigator from './navigation/TabNavigator';
 import CategoryDetailScreen from './screens/CategoryDetailScreen';
+import SplashScreen from './screens/SplashScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
   // 웹에서 CSS 파일 로드
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -17,6 +20,10 @@ export default function App() {
       document.head.appendChild(link);
     }
   }, []);
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
 
   return (
     <NavigationContainer>
