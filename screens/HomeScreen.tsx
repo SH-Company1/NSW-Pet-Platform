@@ -52,10 +52,12 @@ export default function HomeScreen() {
       >
         {/* Top Navigation Bar */}
         <View style={styles.topNavBar}>
-          <TouchableOpacity style={styles.menuButton}>
-            <Text style={styles.menuIcon}>☰</Text>
-          </TouchableOpacity>
-          <Text style={styles.logo}>애들이랑 🐶😺</Text>
+          <View style={styles.leftSection}>
+            <TouchableOpacity style={styles.menuButton}>
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+            <Text style={styles.logo}>애들이랑 🐾🐾</Text>
+          </View>
           <View style={styles.headerIcons}>
             <TouchableOpacity>
               <Text style={styles.headerIcon}>🔍</Text>
@@ -94,15 +96,15 @@ export default function HomeScreen() {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={(event) => {
+            onScroll={(event) => {
               const slideSize = event.nativeEvent.layoutMeasurement.width;
-              const index = Math.round(
-                event.nativeEvent.contentOffset.x / slideSize
-              );
+              const offset = event.nativeEvent.contentOffset.x;
+              const index = Math.round(offset / slideSize);
               // 인덱스를 배너 개수로 제한
               const safeIndex = Math.max(0, Math.min(index, banners.length - 1));
               setCurrentBannerIndex(safeIndex);
             }}
+            scrollEventThrottle={200}
           >
             {banners.map((banner) => (
               <View key={banner.id} style={[styles.bannerSlide, { width }]}>
@@ -175,6 +177,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
   },
+  leftSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   menuButton: {
     padding: 4,
   },
@@ -186,8 +193,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFA042',
-    flex: 1,
-    textAlign: 'center',
   },
   headerIcons: {
     flexDirection: 'row',
