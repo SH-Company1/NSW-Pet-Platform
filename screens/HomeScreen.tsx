@@ -8,7 +8,9 @@ import {
   SafeAreaView,
   Dimensions,
   Image,
+  Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -50,47 +52,74 @@ export default function HomeScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Top Navigation Bar */}
-        <View style={styles.topNavBar}>
+        {/* Top Navigation Bar with Gradient */}
+        <LinearGradient
+          colors={['#FF9A56', '#FFA042']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.topNavBar}
+        >
           <View style={styles.leftSection}>
             <TouchableOpacity style={styles.menuButton}>
               <Text style={styles.menuIcon}>☰</Text>
             </TouchableOpacity>
-            <Text style={styles.logo}>애들이랑 🐾🐾</Text>
+            <Text style={styles.logo}>애들이랑 🐾</Text>
           </View>
           <View style={styles.headerIcons}>
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
               <Text style={styles.headerIcon}>🔍</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
               <Text style={styles.headerIcon}>🛒</Text>
             </TouchableOpacity>
           </View>
+        </LinearGradient>
+
+        {/* Promotional Banner */}
+        <View style={styles.promoBanner}>
+          <LinearGradient
+            colors={['#FFE8D6', '#FFF5EB']}
+            style={styles.promoBannerGradient}
+          >
+            <View style={styles.promoContent}>
+              <View style={styles.promoTextSection}>
+                <Text style={styles.promoTitle}>🎉 신규회원 특별혜택</Text>
+                <Text style={styles.promoSubtitle}>첫 구매 시 15% 할인쿠폰</Text>
+              </View>
+              <TouchableOpacity style={styles.promoButton}>
+                <Text style={styles.promoButtonText}>받기</Text>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
         </View>
 
-        {/* Info Bar (예: 핫구매 100원~, 특가/혜택 등) */}
-        <View style={styles.infoBar}>
+        {/* Quick Action Bar */}
+        <View style={styles.quickActionBar}>
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.infoBarContent}
+            contentContainerStyle={styles.quickActionContent}
           >
-            <View style={styles.infoBadge}>
-              <Text style={styles.infoBadgeText}>🔥 핫구매 100원~</Text>
-            </View>
-            <View style={styles.infoBadge}>
-              <Text style={styles.infoBadgeText}>✨ 특가/혜택</Text>
-            </View>
-            <View style={styles.infoBadge}>
-              <Text style={styles.infoBadgeText}>🎁 강아지 패딩 4,800원</Text>
-            </View>
-            <View style={styles.infoBadge}>
-              <Text style={styles.infoBadgeText}>⭐ 베스트</Text>
-            </View>
+            <TouchableOpacity style={[styles.quickActionBadge, styles.hotDeal]}>
+              <Text style={styles.quickActionIcon}>🔥</Text>
+              <Text style={styles.quickActionText}>핫딜</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.quickActionBadge, styles.special]}>
+              <Text style={styles.quickActionIcon}>✨</Text>
+              <Text style={styles.quickActionText}>특가</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.quickActionBadge, styles.event]}>
+              <Text style={styles.quickActionIcon}>🎁</Text>
+              <Text style={styles.quickActionText}>이벤트</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.quickActionBadge, styles.best]}>
+              <Text style={styles.quickActionIcon}>⭐</Text>
+              <Text style={styles.quickActionText}>베스트</Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
 
-        {/* Horizontal Scrollable Banner Section */}
+        {/* Banner Section with Enhanced Design */}
         <View style={styles.bannerSection}>
           <View style={styles.bannerContainer}>
             <ScrollView
@@ -101,7 +130,6 @@ export default function HomeScreen() {
                 const slideSize = event.nativeEvent.layoutMeasurement.width;
                 const offset = event.nativeEvent.contentOffset.x;
                 const index = Math.round(offset / slideSize);
-                // 인덱스를 배너 개수로 제한
                 const safeIndex = Math.max(0, Math.min(index, banners.length - 1));
                 setCurrentBannerIndex(safeIndex);
               }}
@@ -109,15 +137,22 @@ export default function HomeScreen() {
             >
               {banners.map((banner) => (
                 <View key={banner.id} style={[styles.bannerSlide, { width: containerWidth }]}>
-                  <Image
-                    source={banner.image}
-                    style={styles.bannerImage}
-                    resizeMode="cover"
-                  />
+                  <View style={styles.bannerImageWrapper}>
+                    <Image
+                      source={banner.image}
+                      style={styles.bannerImage}
+                      resizeMode="cover"
+                    />
+                    {/* Gradient Overlay */}
+                    <LinearGradient
+                      colors={['transparent', 'rgba(0,0,0,0.3)']}
+                      style={styles.bannerOverlay}
+                    />
+                  </View>
                 </View>
               ))}
             </ScrollView>
-            {/* Banner Indicator */}
+            {/* Enhanced Banner Indicator */}
             <View style={styles.bannerIndicator}>
               <Text style={styles.bannerIndicatorText}>
                 {currentBannerIndex + 1} / {banners.length}
@@ -126,24 +161,35 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Category Grid */}
+        {/* Section Header */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionHeaderTitle}>카테고리</Text>
+          <Text style={styles.sectionHeaderSubtitle}>원하는 카테고리를 선택하세요</Text>
+        </View>
+
+        {/* Enhanced Category Grid */}
         <View style={styles.categoriesContainer}>
           {MAIN_CATEGORIES.map((category) => (
             <TouchableOpacity
               key={category.id}
-              style={[styles.categoryCard, { borderColor: category.color + '40' }]}
+              style={styles.categoryCard}
               onPress={() => handleCategoryPress(category)}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
-              <View
-                style={[
-                  styles.iconContainer,
-                  { backgroundColor: category.color + '30' },
-                ]}
+              <LinearGradient
+                colors={[category.color + '20', category.color + '10']}
+                style={styles.categoryGradient}
               >
-                <Text style={styles.categoryIcon}>{category.icon}</Text>
-              </View>
-              <Text style={styles.categoryName}>{category.name}</Text>
+                <View
+                  style={[
+                    styles.iconContainer,
+                    { backgroundColor: category.color + '30' },
+                  ]}
+                >
+                  <Text style={styles.categoryIcon}>{category.icon}</Text>
+                </View>
+                <Text style={styles.categoryName}>{category.name}</Text>
+              </LinearGradient>
             </TouchableOpacity>
           ))}
         </View>
@@ -163,158 +209,351 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F8F9FA',
   },
   scrollContent: {
-    paddingBottom: 80,
+    paddingBottom: 90,
   },
-  // Top Navigation Bar
+  // Top Navigation Bar with Gradient
   topNavBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   leftSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
   },
   menuButton: {
-    padding: 4,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   menuIcon: {
-    fontSize: 28,
-    color: '#424242',
+    fontSize: 24,
+    color: '#FFFFFF',
   },
   logo: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFA042',
+    color: '#FFFFFF',
+    letterSpacing: -0.5,
   },
   headerIcons: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 12,
     alignItems: 'center',
   },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   headerIcon: {
-    fontSize: 24,
+    fontSize: 20,
   },
-  // Info Bar
-  infoBar: {
-    backgroundColor: '#FFF9F0',
-    borderBottomWidth: 1,
-    borderBottomColor: '#FFE5CC',
+  // Promotional Banner
+  promoBanner: {
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 12,
+    borderRadius: 16,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#FF8C00',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
   },
-  infoBarContent: {
+  promoBannerGradient: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  promoContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  promoTextSection: {
+    flex: 1,
+  },
+  promoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FF6B00',
+    marginBottom: 4,
+  },
+  promoSubtitle: {
+    fontSize: 13,
+    color: '#FF8C00',
+    fontWeight: '500',
+  },
+  promoButton: {
+    backgroundColor: '#FF6B00',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    borderRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#FF6B00',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  promoButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  // Quick Action Bar
+  quickActionBar: {
+    marginBottom: 8,
+  },
+  quickActionContent: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    gap: 12,
+    gap: 10,
   },
-  infoBadge: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
+  quickActionBadge: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
+  },
+  hotDeal: {
+    backgroundColor: '#FFF5F5',
     borderWidth: 1,
-    borderColor: '#FFD699',
+    borderColor: '#FFE0E0',
   },
-  infoBadgeText: {
-    fontSize: 14,
+  special: {
+    backgroundColor: '#FFF9EB',
+    borderWidth: 1,
+    borderColor: '#FFE8B8',
+  },
+  event: {
+    backgroundColor: '#F0F9FF',
+    borderWidth: 1,
+    borderColor: '#D0E8FF',
+  },
+  best: {
+    backgroundColor: '#FFF5EC',
+    borderWidth: 1,
+    borderColor: '#FFE4CC',
+  },
+  quickActionIcon: {
+    fontSize: 18,
+  },
+  quickActionText: {
+    fontSize: 13,
     fontWeight: '600',
-    color: '#FF8C00',
+    color: '#333',
   },
   // Banner Section
   bannerSection: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 20,
     alignItems: 'center',
   },
   bannerContainer: {
     width: containerWidth,
     maxWidth: '100%',
     position: 'relative',
+    borderRadius: 20,
     overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
   bannerSlide: {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bannerImageWrapper: {
+    width: containerWidth,
+    height: 240,
+    position: 'relative',
+  },
   bannerImage: {
     width: containerWidth,
     height: 240,
   },
+  bannerOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+  },
   bannerIndicator: {
     position: 'absolute',
-    bottom: 12,
+    bottom: 16,
     right: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 16,
   },
   bannerIndicatorText: {
     color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
-  // Categories
+  // Section Header
+  sectionHeader: {
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  sectionHeaderTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#1A1A1A',
+    marginBottom: 4,
+  },
+  sectionHeaderSubtitle: {
+    fontSize: 13,
+    color: '#666',
+    fontWeight: '500',
+  },
+  // Enhanced Categories
   categoriesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 16,
-    gap: 16,
-    marginTop: 8,
+    gap: 12,
+    marginBottom: 20,
   },
   categoryCard: {
     width: CARD_SIZE,
     height: CARD_SIZE,
-    backgroundColor: '#FAFAFA',
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: 20,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  categoryGradient: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 12,
   },
   iconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   categoryIcon: {
-    fontSize: 32,
+    fontSize: 34,
   },
   categoryName: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#424242',
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#2C2C2C',
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   // Bottom Section
   bottomSection: {
-    paddingHorizontal: 16,
-    marginTop: 24,
+    paddingHorizontal: 20,
+    marginTop: 16,
+    marginBottom: 40,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#212121',
+    color: '#1A1A1A',
+    letterSpacing: -0.5,
   },
   placeholder: {
-    padding: 40,
+    backgroundColor: '#FFFFFF',
+    padding: 50,
     alignItems: 'center',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E8E8E8',
+    borderStyle: 'dashed',
   },
   placeholderText: {
-    fontSize: 14,
-    color: '#9E9E9E',
+    fontSize: 15,
+    color: '#999',
+    fontWeight: '500',
   },
 });
 
