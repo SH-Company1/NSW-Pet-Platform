@@ -16,6 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types/navigation';
 import { MAIN_CATEGORIES, Category } from '../types/models';
+import { useFonts, NotoSansKR_400Regular, NotoSansKR_500Medium, NotoSansKR_700Bold, NotoSansKR_900Black } from '@expo-google-fonts/noto-sans-kr';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -28,6 +29,14 @@ export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  // Load Noto Sans KR fonts
+  const [fontsLoaded] = useFonts({
+    NotoSansKR_400Regular,
+    NotoSansKR_500Medium,
+    NotoSansKR_700Bold,
+    NotoSansKR_900Black,
+  });
 
   const banners = [
     { id: 1, image: require('../assets/products/product1.jpg') },
@@ -42,6 +51,11 @@ export default function HomeScreen() {
       categoryColor: category.color,
     });
   };
+
+  // Show nothing while fonts are loading
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -126,6 +140,9 @@ export default function HomeScreen() {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
+              snapToInterval={containerWidth}
+              decelerationRate="fast"
+              snapToAlignment="center"
               onScroll={(event) => {
                 const slideSize = event.nativeEvent.layoutMeasurement.width;
                 const offset = event.nativeEvent.contentOffset.x;
@@ -255,6 +272,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
     letterSpacing: -0.5,
+    fontFamily: 'NotoSansKR_900Black',
   },
   headerIcons: {
     flexDirection: 'row',
@@ -308,11 +326,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FF6B00',
     marginBottom: 4,
+    fontFamily: 'NotoSansKR_700Bold',
   },
   promoSubtitle: {
     fontSize: 13,
     color: '#FF8C00',
     fontWeight: '500',
+    fontFamily: 'NotoSansKR_500Medium',
   },
   promoButton: {
     backgroundColor: '#FF6B00',
@@ -335,6 +355,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: 'bold',
+    fontFamily: 'NotoSansKR_700Bold',
   },
   // Quick Action Bar
   quickActionBar: {
@@ -391,6 +412,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: '#333',
+    fontFamily: 'NotoSansKR_700Bold',
   },
   // Banner Section
   bannerSection: {
@@ -450,6 +472,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     letterSpacing: 0.5,
+    fontFamily: 'NotoSansKR_700Bold',
   },
   // Section Header
   sectionHeader: {
@@ -461,11 +484,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1A1A1A',
     marginBottom: 4,
+    fontFamily: 'NotoSansKR_900Black',
   },
   sectionHeaderSubtitle: {
     fontSize: 13,
     color: '#666',
     fontWeight: '500',
+    fontFamily: 'NotoSansKR_400Regular',
   },
   // Enhanced Categories
   categoriesContainer: {
@@ -527,6 +552,7 @@ const styles = StyleSheet.create({
     color: '#2C2C2C',
     textAlign: 'center',
     letterSpacing: -0.3,
+    fontFamily: 'NotoSansKR_700Bold',
   },
   // Bottom Section
   bottomSection: {
@@ -540,6 +566,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#1A1A1A',
     letterSpacing: -0.5,
+    fontFamily: 'NotoSansKR_900Black',
   },
   placeholder: {
     backgroundColor: '#FFFFFF',
@@ -554,6 +581,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#999',
     fontWeight: '500',
+    fontFamily: 'NotoSansKR_500Medium',
   },
 });
 
