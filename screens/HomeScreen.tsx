@@ -92,35 +92,37 @@ export default function HomeScreen() {
 
         {/* Horizontal Scrollable Banner Section */}
         <View style={styles.bannerSection}>
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onScroll={(event) => {
-              const slideSize = event.nativeEvent.layoutMeasurement.width;
-              const offset = event.nativeEvent.contentOffset.x;
-              const index = Math.round(offset / slideSize);
-              // 인덱스를 배너 개수로 제한
-              const safeIndex = Math.max(0, Math.min(index, banners.length - 1));
-              setCurrentBannerIndex(safeIndex);
-            }}
-            scrollEventThrottle={200}
-          >
-            {banners.map((banner) => (
-              <View key={banner.id} style={[styles.bannerSlide, { width }]}>
-                <Image
-                  source={banner.image}
-                  style={styles.bannerImage}
-                  resizeMode="stretch"
-                />
-              </View>
-            ))}
-          </ScrollView>
-          {/* Banner Indicator */}
-          <View style={styles.bannerIndicator}>
-            <Text style={styles.bannerIndicatorText}>
-              {currentBannerIndex + 1} / {banners.length}
-            </Text>
+          <View style={styles.bannerContainer}>
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={(event) => {
+                const slideSize = event.nativeEvent.layoutMeasurement.width;
+                const offset = event.nativeEvent.contentOffset.x;
+                const index = Math.round(offset / slideSize);
+                // 인덱스를 배너 개수로 제한
+                const safeIndex = Math.max(0, Math.min(index, banners.length - 1));
+                setCurrentBannerIndex(safeIndex);
+              }}
+              scrollEventThrottle={200}
+            >
+              {banners.map((banner) => (
+                <View key={banner.id} style={[styles.bannerSlide, { width: containerWidth }]}>
+                  <Image
+                    source={banner.image}
+                    style={styles.bannerImage}
+                    resizeMode="cover"
+                  />
+                </View>
+              ))}
+            </ScrollView>
+            {/* Banner Indicator */}
+            <View style={styles.bannerIndicator}>
+              <Text style={styles.bannerIndicatorText}>
+                {currentBannerIndex + 1} / {banners.length}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -230,13 +232,20 @@ const styles = StyleSheet.create({
   bannerSection: {
     marginTop: 16,
     marginBottom: 16,
+    alignItems: 'center',
+  },
+  bannerContainer: {
+    width: containerWidth,
+    maxWidth: '100%',
     position: 'relative',
+    overflow: 'hidden',
   },
   bannerSlide: {
-    width: width,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bannerImage: {
-    width: width,
+    width: containerWidth,
     height: 240,
   },
   bannerIndicator: {
