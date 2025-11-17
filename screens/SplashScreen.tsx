@@ -60,8 +60,8 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       >
         {/* 상단 텍스트 */}
         <View style={styles.topTextContainer}>
-          <Text style={styles.topText}>대한민국</Text>
-          <Text style={styles.topSubtext}>반려동물 통합 플랫폼</Text>
+          <Text style={styles.topText}>반려생활의</Text>
+          <Text style={styles.topSubtext}>새로운 기준</Text>
         </View>
 
         {/* 중앙 타이틀 */}
@@ -83,13 +83,8 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
           ]}
         >
           <Image
-            source={require('../assets/dog.png')}
-            style={styles.dogImage}
-            resizeMode="contain"
-          />
-          <Image
-            source={require('../assets/cat.png')}
-            style={styles.catImage}
+            source={require('../assets/animals.png')}
+            style={styles.animalsImage}
             resizeMode="contain"
           />
         </Animated.View>
@@ -157,12 +152,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 1,
   },
-  dogImage: {
-    width: 160,
-    height: 160,
-  },
-  catImage: {
-    width: 230,
+  animalsImage: {
+    width: 400,
     height: 230,
   },
   loadingText: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -24,6 +25,13 @@ const CARD_SIZE = (containerWidth - 64) / 3; // 3 columns with padding
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const insets = useSafeAreaInsets();
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  const banners = [
+    { id: 1, image: require('../assets/products/product1.jpg') },
+    { id: 2, image: require('../assets/products/product2.jpg') },
+    { id: 3, image: require('../assets/products/product3.jpg') },
+  ];
 
   const handleCategoryPress = (category: Category) => {
     navigation.navigate('CategoryDetail', {
@@ -42,23 +50,76 @@ export default function HomeScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.logo}>NSW Pet</Text>
-          <TouchableOpacity>
-            <Text style={styles.notification}>🔔</Text>
+        {/* Top Navigation Bar */}
+        <View style={styles.topNavBar}>
+          <TouchableOpacity style={styles.menuButton}>
+            <Text style={styles.menuIcon}>☰</Text>
           </TouchableOpacity>
+          <Text style={styles.logo}>애들이랑 🐶😺</Text>
+          <View style={styles.headerIcons}>
+            <TouchableOpacity>
+              <Text style={styles.headerIcon}>🔍</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={styles.headerIcon}>🛒</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Banner */}
-        <View style={styles.banner}>
-          <View style={styles.bannerContent}>
-            <Text style={styles.bannerSubtitle}>우리 반려동물을 위한</Text>
-            <Text style={styles.bannerTitle}>NSW Pet{'\n'}Platform</Text>
+        {/* Info Bar (예: 핫구매 100원~, 특가/혜택 등) */}
+        <View style={styles.infoBar}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.infoBarContent}
+          >
+            <View style={styles.infoBadge}>
+              <Text style={styles.infoBadgeText}>🔥 핫구매 100원~</Text>
+            </View>
+            <View style={styles.infoBadge}>
+              <Text style={styles.infoBadgeText}>✨ 특가/혜택</Text>
+            </View>
+            <View style={styles.infoBadge}>
+              <Text style={styles.infoBadgeText}>🎁 강아지 패딩 4,800원</Text>
+            </View>
+            <View style={styles.infoBadge}>
+              <Text style={styles.infoBadgeText}>⭐ 베스트</Text>
+            </View>
+          </ScrollView>
+        </View>
+
+        {/* Horizontal Scrollable Banner Section */}
+        <View style={styles.bannerSection}>
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={(event) => {
+              const slideSize = event.nativeEvent.layoutMeasurement.width;
+              const index = Math.round(
+                event.nativeEvent.contentOffset.x / slideSize
+              );
+              // 인덱스를 배너 개수로 제한
+              const safeIndex = Math.max(0, Math.min(index, banners.length - 1));
+              setCurrentBannerIndex(safeIndex);
+            }}
+          >
+            {banners.map((banner) => (
+              <View key={banner.id} style={[styles.bannerSlide, { width }]}>
+                <Image
+                  source={banner.image}
+                  style={styles.bannerImage}
+                  resizeMode="stretch"
+                />
+              </View>
+            ))}
+          </ScrollView>
+          {/* Banner Indicator */}
+          <View style={styles.bannerIndicator}>
+            <Text style={styles.bannerIndicatorText}>
+              {currentBannerIndex + 1} / {banners.length}
+            </Text>
           </View>
-          <TouchableOpacity style={styles.bannerButton}>
-            <Text style={styles.bannerButtonText}>자세히 보기 →</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Category Grid */}
@@ -103,61 +164,97 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 80,
   },
-  header: {
+  // Top Navigation Bar
+  topNavBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+  },
+  menuButton: {
+    padding: 4,
+  },
+  menuIcon: {
+    fontSize: 28,
+    color: '#424242',
   },
   logo: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFA042',
+    flex: 1,
+    textAlign: 'center',
   },
-  notification: {
+  headerIcons: {
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+  },
+  headerIcon: {
     fontSize: 24,
   },
-  banner: {
-    marginHorizontal: 16,
-    marginVertical: 16,
-    height: 180,
-    backgroundColor: '#FFB366',
+  // Info Bar
+  infoBar: {
+    backgroundColor: '#FFF9F0',
+    borderBottomWidth: 1,
+    borderBottomColor: '#FFE5CC',
+  },
+  infoBarContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  infoBadge: {
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 20,
-    padding: 20,
-    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#FFD699',
   },
-  bannerContent: {
-    flex: 1,
-  },
-  bannerSubtitle: {
-    fontSize: 16,
-    color: '#C65F00',
-    marginBottom: 8,
-  },
-  bannerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#8B4000',
-    lineHeight: 34,
-  },
-  bannerButton: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#FF8C00',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  bannerButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+  infoBadgeText: {
     fontSize: 14,
+    fontWeight: '600',
+    color: '#FF8C00',
   },
+  // Banner Section
+  bannerSection: {
+    marginTop: 16,
+    marginBottom: 16,
+    position: 'relative',
+  },
+  bannerSlide: {
+    width: width,
+  },
+  bannerImage: {
+    width: width,
+    height: 240,
+  },
+  bannerIndicator: {
+    position: 'absolute',
+    bottom: 12,
+    right: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  bannerIndicatorText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  // Categories
   categoriesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 16,
     gap: 16,
+    marginTop: 8,
   },
   categoryCard: {
     width: CARD_SIZE,
@@ -186,6 +283,7 @@ const styles = StyleSheet.create({
     color: '#424242',
     textAlign: 'center',
   },
+  // Bottom Section
   bottomSection: {
     paddingHorizontal: 16,
     marginTop: 24,
