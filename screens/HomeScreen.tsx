@@ -143,6 +143,7 @@ export default function HomeScreen() {
               snapToInterval={containerWidth}
               decelerationRate="fast"
               snapToAlignment="center"
+              disableIntervalMomentum={true}
               onScroll={(event) => {
                 const slideSize = event.nativeEvent.layoutMeasurement.width;
                 const offset = event.nativeEvent.contentOffset.x;
